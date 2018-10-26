@@ -116,7 +116,11 @@ class CommonFunctions(object):
 
         :param job_id: the job id
         """
-        job_url = "/{}/system/job/{}".format(self.U4V_VERSION, job_id)
+        if self.U4V_VERSION:
+            job_url = "/{}/system/job/{}".format(self.U4V_VERSION, job_id)
+        else:
+            job_url = "/system/job/{}".format(job_id)
+
         return self.get_request(job_url, 'job')
 
     def _is_job_finished(self, job_id):
@@ -508,7 +512,11 @@ class CommonFunctions(object):
         :return: version and major_version(e.g. ("V8.4.0.16", "84"))
         """
         version, major_version = None, None
-        target_uri = "/%s/system/version" % self.U4V_VERSION
+        if self.U4V_VERSION:
+            target_uri = "/{}/system/version".format(self.U4V_VERSION)
+        else:
+            target_uri = "/system/version"
+
         response = self.get_request(target_uri, 'version')
         if response and response.get('version'):
             version = response['version']
@@ -522,7 +530,11 @@ class CommonFunctions(object):
         :param filters: optional dict of filters
         :return: dict
         """
-        target_uri = "/{}/system/symmetrix".format(self.U4V_VERSION)
+        if self.U4V_VERSION:
+            target_uri = "/{}/system/symmetrix".format(self.U4V_VERSION)
+        else:
+            target_uri = "/system/symmetrix"
+
         response = self.get_request(target_uri, 'symmetrix', params=filters)
         if response and response.get('symmetrixId'):
             return response['symmetrixId']
@@ -534,7 +546,11 @@ class CommonFunctions(object):
         :param filters: optional dict of filters
         :return: list of array ids
         """
-        target_uri = "/{}/sloprovisioning/symmetrix".format(self.U4V_VERSION)
+        if self.U4V_VERSION:
+            target_uri = "/{}/sloprovisioning/symmetrix".format(self.U4V_VERSION)
+        else:
+            target_uri = "/sloprovisioning/symmetrix"
+
         response = self.get_request(target_uri, 'symmetrix', params=filters)
         if response and response.get('symmetrixId'):
             return response['symmetrixId']
@@ -545,8 +561,12 @@ class CommonFunctions(object):
 
         :return: server response
         """
-        target_uri = "/{}/system/symmetrix/{}".format(
-            self.U4V_VERSION, array_id)
+        if self.U4V_VERSION:
+            target_uri = "/{}/system/symmetrix/{}".format(
+                self.U4V_VERSION, array_id)
+        else:
+            target_uri = "/system/symmetrix/{}".format(array_id)
+
         return self.get_request(target_uri, 'symmetrix')
 
     def get_iterator_page_list(self, iterator_id, start, end):
@@ -577,8 +597,12 @@ class CommonFunctions(object):
         :return: dict
         """
         wlp_details = None
-        target_uri = ("/{}/wlp/symmetrix/{}".format(
-            self.U4V_VERSION, array_id))
+        if self.U4V_VERSION:
+            target_uri = "/{}/wlp/symmetrix/{}".format(
+                self.U4V_VERSION, array_id)
+        else:
+            target_uri = "/wlp/symmetrix/{}".format(array_id)
+
         response = self.get_request(target_uri, 'wlp')
         if response and response.get('symmetrixDetails'):
             wlp_details = response['symmetrixDetails']
